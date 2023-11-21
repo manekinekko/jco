@@ -297,7 +297,7 @@ export const poll = {
   poll(list) {
     const includeList = ioCall(POLL_POLL_LIST, null, pollableListToIds(list));
     return list.filter((pollable) => {
-      if (includeList.includes(pollable.id)) {
+      if (includeList.includes(pollable._id)) {
         pollableMarkReady(pollable);
         return true;
       }
