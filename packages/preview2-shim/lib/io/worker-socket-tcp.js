@@ -5,6 +5,9 @@ const {
   TCPConnectWrap,
 } = process.binding("tcp_wrap");
 
+/*global internalBinding */
+const { ShutdownWrap } = internalBinding('stream_wrap');
+
 /** @type {Map<number, NodeJS.Socket>} */
 export const openedSockets = new Map();
 
@@ -92,8 +95,6 @@ export function socketTcpListen(id, payload) {
   return socket.listen(backlogSize);
 }
 
-export function socketTcpAccept(id, payload) {}
-
 export function socketTcpGetLocalAddress(id) {
   const socket = getSocketOrThrow(id);
   const out = {};
@@ -110,6 +111,8 @@ export function socketTcpGetRemoteAddress(id) {
 
 export function socketTcpShutdown(id, payload) {
   const socket = getSocketOrThrow(id);
+  
+  // eslint-disable-next-line no-unused-vars
   const { shutdownType } = payload;
 
   return new Promise((resolve) => {
